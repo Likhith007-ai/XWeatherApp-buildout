@@ -7,19 +7,20 @@ export const WeatherApp = () => {
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const API_KEY = "c795a89574e0479680073112242802"; // Replace with your actual API key
+
   const fetchData = async () => {
-    if (!location) {
-      setWeather(null);
+    if (!location.trim()) {
+      alert("Please enter a city name.");
       return;
     }
 
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://api.weatherapi.com/v1/current.json?key=c795a89574e0479680073112242802&q=${location}`
+        `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${location}`
       );
       setWeather(response.data);
-      console.log(response.data);
     } catch (error) {
       alert(`Failed to fetch weather data: ${error.message}`);
       setWeather(null);
@@ -37,32 +38,28 @@ export const WeatherApp = () => {
           value={location}
           onChange={(e) => setLocation(e.target.value)}
         />
-        <button type="submit" onClick={fetchData}>
+        <button type="button" onClick={fetchData}>
           Search
         </button>
-        {loading ? (
-          <p className="loading-text">Loading...</p>
-        ) : (
-          weather && (
-            <div>
-              <div className="weather-box">
-                <p>Temperature: {weather.current.temp_c}°C</p>
-              </div>
-              <div className="weather-box">
-                <p>Condition: {weather.current.condition.text}</p>
-              </div>
-              <div className="weather-box">
-                <p>Humidity: {weather.current.humidity}%</p>
-              </div>
-              <div className="weather-box">
-                <p>Wind Speed: {weather.current.wind_kph} kph</p>
-              </div>
+        {loading && <p className="loading-text">Loading data...</p>}
+        {weather && (
+          <div className="weather-cards">
+            <div className="weather-card">
+              <p>Temperature: {weather.current.temp_c}°C</p>
             </div>
-          )
+            <div className="weather-card">
+              <p>Condition: {weather.current.condition.text}</p>
+            </div>
+            <div className="weather-card">
+              <p>Humidity: {weather.current.humidity}%</p>
+            </div>
+            <div className="weather-card">
+              <p>Wind Speed: {weather.current.wind_kph} kph</p>
+            </div>
+          </div>
         )}
       </div>
     </div>
   );
 };
 
-export default WeatherApp;
