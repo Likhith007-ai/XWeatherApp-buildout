@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import axios from "axios";
 
@@ -38,10 +38,10 @@ export const WeatherApp = () => {
           onChange={(e) => setLocation(e.target.value)}
         />
         <button type="submit" onClick={fetchData}>
-          Submit
+          Search
         </button>
         {loading ? (
-          <p>Loading...</p>
+          <p className="loading-text">Loading...</p>
         ) : (
           weather && (
             <div>
